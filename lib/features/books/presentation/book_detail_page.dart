@@ -28,7 +28,7 @@ class BookDetailPage extends ConsumerWidget {
               const SizedBox(height: 16),
               Text(
                 book.title,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 8),
               Text('Penulis: ${book.author}'),
