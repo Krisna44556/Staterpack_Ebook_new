@@ -4,6 +4,10 @@ class BookModel {
   final int id;
   final String title;
   final String author;
+  final String publisher;
+  final int year;
+  final int category
+   
   final String description;
   final String coverUrl;
   final int categoryId;
@@ -24,12 +28,19 @@ class BookModel {
       id: json['id'],
       title: json['title'] ?? '',
       author: json['author'] ?? '',
+      publisher: json['publisher'] ?? '',
+      year: json ['year'] ?? 0,
+      category: json ['category'] != null
       description: json['description'] ?? '',
-      coverUrl: json['cover_url'] ?? '',
-      categoryId: json['category_id'],
-      category: json['category'] != null
-          ? CategoryModel.fromJson(json['category'])
-          : null,
+      stock: json['stock'] ?? 0,
+      borrowed_count: json['borrowed_count'] ?? 0,
+      created_at: json ['created_at'] != null
+      updated_at: json ['updated_at'] != null
+      quantity: json['quantity'] ?? 0,
+      published_year: json['published_year'] ?? 0,
+
+    
+     
     );
   }
 
