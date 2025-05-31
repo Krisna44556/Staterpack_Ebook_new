@@ -26,8 +26,19 @@ class BookListPage extends ConsumerWidget {
               return BookCard(
                 book: book,
                 onTap: () {
-                  // Navigasi ke detail buku, contoh:
-                  // Navigator.push(context, MaterialPageRoute(builder: (_) => BookDetailPage(bookId: book.id)));
+                  // TODO: Navigasi ke detail buku
+                },
+                onBorrow: () {
+                  if (book.isAvailable) {
+                    // TODO: tambahkan logika penyimpanan jika perlu
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Berhasil meminjam "${book.title}"')),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('"${book.title}" sedang tidak tersedia')),
+                    );
+                  }
                 },
               );
             },
