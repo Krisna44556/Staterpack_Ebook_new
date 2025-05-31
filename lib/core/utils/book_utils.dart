@@ -7,10 +7,14 @@ class BookUtils {
     return books.take(count).toList();
   }
 
-  /// Mengambil daftar buku berdasarkan kategori
-  static List<BookModel> getBooksByCategory(List<BookModel> books, String category) {
-    return books.where((book) => book.category?.toLowerCase() == category.toLowerCase()).toList();
-  }
+ /// Mengambil daftar buku berdasarkan nama kategori (tidak case-sensitive)
+static List<BookModel> getBooksByCategory(List<BookModel> books, String category) {
+  return books
+      .where((book) =>
+          book.category?.name.toLowerCase() == category.toLowerCase())
+      .toList();
+}
+
 
   /// Mengambil buku berdasarkan ID
   static BookModel? getBookById(List<BookModel> books, int id) {
@@ -26,8 +30,9 @@ class BookUtils {
     return books.where((book) => book.isAvailable).toList();
   }
 
-  /// Mengambil daftar buku berdasarkan tahun terbit
-  static List<BookModel> getBooksByYear(List<BookModel> books, int year) {
-    return books.where((book) => book.publishedYear == year).toList();
-  }
+ /// Mengambil daftar buku berdasarkan tahun terbit
+static List<BookModel> getBooksByYear(List<BookModel> books, int year) {
+  return books.where((book) => book.year == year).toList();
+}
+
 }

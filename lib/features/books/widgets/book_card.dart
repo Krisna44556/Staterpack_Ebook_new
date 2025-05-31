@@ -3,35 +3,34 @@ import '../../../models/book_model.dart';
 
 class BookCard extends StatelessWidget {
   final BookModel book;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final VoidCallback? onBorrow;
 
   const BookCard({
     Key? key,
     required this.book,
-    required this.onTap,
+    this.onTap,
+    this.onBorrow,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.all(8),
       child: ListTile(
-        leading: book.coverUrl.isNotEmpty
-            ? Image.network(
-                book.coverUrl,
-                width: 50,
-                height: 70,
-                fit: BoxFit.cover,
-              )
-            : const SizedBox(
-                width: 50,
-                height: 70,
-                child: Icon(Icons.book),
-              ),
+        leading: book.coverUrl != null
+            ? Image.network(book.coverUrl!, width: 50, fit: BoxFit.cover)
+            : const Icon(Icons.book),
         title: Text(book.title),
-        subtitle: Text('Penulis: ${book.author}\nKategori: ${book.categoryName}'),
-        isThreeLine: true,
+        subtitle: Text(book.author),
         onTap: onTap,
+        trailing: ElevatedButton(
+          onPressed: onBorrow,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+          ),
+          child: const Text('Pinjam'),
+        ),
       ),
     );
   }
