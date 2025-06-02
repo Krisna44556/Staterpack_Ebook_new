@@ -1,46 +1,27 @@
-class Review {
-  final int id;
-  final int userId;
-  final int bookId;
-  final int rating;
-  final String? comment;
-  final String createdAt;
-  final String updatedAt;
-  final String? userName; // Optional: nama user pengulas
+class ReviewModel {
+  final String userId;
+  final String comment;
+  final double rating;
 
-  Review({
-    required this.id,
+  ReviewModel({
     required this.userId,
-    required this.bookId,
+    required this.comment,
     required this.rating,
-    this.comment,
-    required this.createdAt,
-    required this.updatedAt,
-    this.userName,
   });
 
-  factory Review.fromJson(Map<String, dynamic> json) {
-    return Review(
-      id: json['id'],
-      userId: json['user_id'],
-      bookId: json['book_id'],
-      rating: json['rating'],
+  factory ReviewModel.fromJson(Map<String, dynamic> json) {
+    return ReviewModel(
+      userId: json['userId'],
       comment: json['comment'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      userName: json['user'] != null ? json['user']['name'] : null,
+      rating: (json['rating'] as num).toDouble(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'user_id': userId,
-      'book_id': bookId,
-      'rating': rating,
+      'userId': userId,
       'comment': comment,
-      'created_at': createdAt,
-      'updated_at': updatedAt,
+      'rating': rating,
     };
   }
 }

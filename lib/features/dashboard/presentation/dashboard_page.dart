@@ -19,7 +19,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
 
   final List<Widget> _pages = [
     const HomePage(),           // Halaman home 
-    const BookListPage(),       // Halaman daftar buku
+    BookListPage(),       // Halaman daftar buku
     const LoanHistoryPage(),    // Halaman riwayat peminjaman
     const ProfilePage(),        // Halaman profil user
   ];

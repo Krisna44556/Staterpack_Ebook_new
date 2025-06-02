@@ -1,51 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../models/book_model.dart'; // ✅ Import model BookModel
 
-import '../../../models/book_model.dart';
-import '../domain/book_provider.dart';
-import '../widgets/book_card.dart';
+class BookListPage extends StatelessWidget {
+  BookListPage({super.key});
 
-class BookListPage extends ConsumerWidget {
-  const BookListPage({Key? key}) : super(key: key);
+  final List<BookModel> books = [
+    BookModel(
+      id: 1,
+      title: 'Buku A',
+      author: 'Penulis A',
+      publisher: 'Penerbit A',
+      year: 2020,
+      stock: 5,
+      borrowedCount: 2,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      description: 'Deskripsi A',
+      coverUrl: 'https://example.com/cover-a.jpg',
+      categoryId: 1,
+      category: null,
+    ),
+    BookModel(
+      id: 2,
+      title: 'Buku B',
+      author: 'Penulis B',
+      publisher: 'Penerbit B',
+      year: 2021,
+      stock: 3,
+      borrowedCount: 3,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      description: 'Deskripsi B',
+      coverUrl: 'https://example.com/cover-b.jpg',
+      categoryId: 2,
+      category: null,
+    ),
+  ];
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final asyncBooks = ref.watch(publicBooksProvider);
-
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Books')),
-      body: asyncBooks.when(
-        data: (books) {
-          if (books.isEmpty) {
-            return const Center(child: Text('No books available'));
-          }
-          return ListView.builder(
-            itemCount: books.length,
-            itemBuilder: (context, index) {
-              final book = books[index];
-              return BookCard(
-                book: book,
-                onTap: () {
-                  // TODO: Navigasi ke detail buku
-                },
-                onBorrow: () {
-                  if (book.isAvailable) {
-                    // TODO: tambahkan logika penyimpanan jika perlu
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Berhasil meminjam "${book.title}"')),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('"${book.title}" sedang tidak tersedia')),
-                    );
-                  }
-                },
-              );
-            },
+      appBar: AppBar(title: const Text('Daftar Buku')),
+      body: ListView.builder(
+        itemCount: books.length,
+        itemBuilder: (context, index) {
+          final book = books[index];
+          return ListTile(
+            leading: Image.network(book.coverUrl, width: 50, fit: BoxFit.cover),
+            title: Text(book.title),
+            subtitle: Text('Penulis: ${book.author}'),
+            trailing: Text(book.isAvailable ? 'Tersedia' : 'Tidak tersedia'),
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(child: Text('Error: $error')),
       ),
     );
   }
