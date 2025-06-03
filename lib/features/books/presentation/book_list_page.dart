@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-=======
-import '../../../models/book_model.dart'; 
->>>>>>> e908809d221d1fab8cd3f1fd18f912afa025ab34
 
 import '../../../models/book_model.dart';
 import '../domain/book_provider.dart';

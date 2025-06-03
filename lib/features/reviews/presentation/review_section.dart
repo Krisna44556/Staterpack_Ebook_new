@@ -26,14 +26,14 @@ class ReviewSection extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Reviews', style: Theme.of(context).textTheme.headline6),
+        Text('Reviews', style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 8),
         if (reviews.isEmpty)
           const Text('No reviews yet.')
         else
           ...reviews.map(
             (review) => ListTile(
-              title: Text(review.userName),
+              title: Text(review.userName ?? ''),
               subtitle: Text(review.comment ?? ''),
               trailing: Text('${review.rating}/5'),
             ),

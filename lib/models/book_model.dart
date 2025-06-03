@@ -45,4 +45,10 @@ class BookModel {
 
   // Getter untuk nama kategori
   String get categoryName => category?.name ?? '-';
+
+  get borrowedCount => null;
+
+  List<BookModel>? get isAvailable => null;
+
+  get year => null;
 }
