@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../../../models/review_model.dart';
 
 class BookReviewRepository {
-  final String baseUrl = 'http://127.0.0.1:8000'; // Ganti sesuai URL backend
+  final String baseUrl = 'http://127.0.0.1:8000'; 
 
   Future<List<ReviewModel>> fetchReviews(int bookId) async {
     final response = await http.get(Uri.parse('$baseUrl/books/$bookId/reviews'));
