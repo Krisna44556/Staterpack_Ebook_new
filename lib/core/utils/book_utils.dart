@@ -27,7 +27,7 @@ static List<BookModel> getBooksByCategory(List<BookModel> books, String category
 
   /// Mengambil daftar buku yang tersedia (quantity > borrowedCount)
   static List<BookModel> getAvailableBooks(List<BookModel> books) {
-    return books.where((book) => book.isAvailable).toList();
+    return books.where((book) => book.isAvailable == true).toList();
   }
 
  /// Mengambil daftar buku berdasarkan tahun terbit
