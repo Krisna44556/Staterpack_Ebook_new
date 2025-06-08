@@ -37,7 +37,8 @@ class ReviewNotifier extends StateNotifier<ReviewState> {
   Future<void> fetchReviews() async {
     try {
       state = state.copyWith(isLoading: true, error: null);
-      final reviews = await _repo.fetchReviewsByBook(bookId);
+      final reviewsFutures = await _repo.fetchReviewsByBook(bookId);
+      final reviews = await Future.wait(reviewsFutures);
       state = state.copyWith(reviews: reviews, isLoading: false);
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoading: false);
