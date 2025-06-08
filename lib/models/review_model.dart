@@ -1,46 +1,33 @@
-class Review {
+class ReviewModel {
   final int id;
-  final int userId;
-  final int bookId;
-  final int rating;
-  final String? comment;
+  final String user;
+  final double rating;
+  final String comment;
   final String createdAt;
-  final String updatedAt;
-  final String? userName; // Optional: nama user pengulas
 
-  Review({
+  ReviewModel({
     required this.id,
-    required this.userId,
-    required this.bookId,
+    required this.user,
     required this.rating,
-    this.comment,
+    required this.comment,
     required this.createdAt,
-    required this.updatedAt,
-    this.userName,
   });
 
-  factory Review.fromJson(Map<String, dynamic> json) {
-    return Review(
+  factory ReviewModel.fromJson(Map<String, dynamic> json) {
+    return ReviewModel(
       id: json['id'],
-      userId: json['user_id'],
-      bookId: json['book_id'],
-      rating: json['rating'],
+      user: json['user'],
+      rating: double.tryParse(json['rating'].toString()) ?? 0.0,
       comment: json['comment'],
       createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      userName: json['user'] != null ? json['user']['name'] : null,
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'user_id': userId,
-      'book_id': bookId,
-      'rating': rating,
-      'comment': comment,
-      'created_at': createdAt,
-      'updated_at': updatedAt,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'user': user,
+        'rating': rating,
+        'comment': comment,
+        'created_at': createdAt,
+      };
 }
