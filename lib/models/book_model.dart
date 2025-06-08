@@ -51,4 +51,6 @@ class BookModel {
   List<BookModel>? get isAvailable => null;
 
   get year => null;
+
+  get rating => null;
 }
