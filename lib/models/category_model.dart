@@ -18,4 +18,6 @@ class CategoryModel {
         'id': id,
         'name': name,
       };
+
+  toLowerCase() {}
 }
