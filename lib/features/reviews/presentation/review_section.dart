@@ -33,7 +33,7 @@ class ReviewSection extends ConsumerWidget {
         else
           ...reviews.map(
             (review) => ListTile(
-              title: Text(review.userName ?? ''),
+              title: Text(review.userName),
               subtitle: Text(review.comment ?? ''),
               trailing: Text('${review.rating}/5'),
             ),
