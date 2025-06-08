@@ -47,4 +47,6 @@ class BookRepository {
       throw Exception('Failed to load book detail');
     }
   }
+
+  getBookById(int bookId) {}
 }
