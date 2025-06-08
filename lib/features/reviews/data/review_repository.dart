@@ -6,7 +6,7 @@ import '../../../models/review_model.dart';
 class ReviewRepository {
   final Dio _dio = DioClient.dio;
 
-  Future<List<Review>> fetchReviewsByBook(int bookId) async {
+  Future<List<Future<Review>>> fetchReviewsByBook(int bookId) async {
     final response = await _dio.get(ApiEndpoints.reviewsByBook(bookId));
     if (response.statusCode == 200) {
       final data = response.data['data']['reviews'] as List;
@@ -42,5 +42,17 @@ class ReviewRepository {
     if (response.statusCode != 200) {
       throw Exception('Failed to delete review');
     }
+  }
+}
+
+class Review {
+  get userName => null;
+
+  get comment => null;
+
+  get rating => null;
+
+  static Future<Review> fromJson(data) {
+    throw UnimplementedError('fromJson() has not been implemented.');
   }
 }
