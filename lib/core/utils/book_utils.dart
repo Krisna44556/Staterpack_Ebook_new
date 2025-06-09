@@ -10,6 +10,7 @@ class BookUtils {
  /// Mengambil daftar buku berdasarkan nama kategori (tidak case-sensitive)
 static List<BookModel> getBooksByCategory(List<BookModel> books, String category) {
   return books
+  
       .where((book) =>
           book.category?.name.toLowerCase() == category.toLowerCase())
       .toList();

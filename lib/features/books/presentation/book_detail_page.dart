@@ -1,22 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../models/book_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../core/service/borrow_service.dart';
 import '../domain/book_provider.dart';
 
 class BookDetailPage extends ConsumerWidget {
-  final int bookId;
+final int bookId;
 
-  const BookDetailPage({Key? key, required this.bookId}) : super(key: key);
+const BookDetailPage({
+Key? key,
+required this.bookId,
+}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final asyncBook = ref.watch(singleBookProvider(bookId)); // Buat provider ini di book_provider.dart
+Future<String?> _getToken() async {
+final prefs = await SharedPreferences.getInstance();
+return prefs.getString('token');
+}
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Detail Buku')),
-      body: asyncBook.when(
-        data: (book) {
+@override
+Widget build(BuildContext context, WidgetRef ref) {
+final asyncBook = ref.watch(singleBookProvider(bookId));
+
+
+return Scaffold(
+  appBar: AppBar(title: const Text('Detail Buku')),
+  body: asyncBook.when(
+    data: (book) {
+      return FutureBuilder<String?>(
+        future: _getToken(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final token = snapshot.data!;
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -27,16 +44,18 @@ class BookDetailPage extends ConsumerWidget {
                     book.coverUrl,
                     height: 220,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 100),
+                    errorBuilder: (_, __, ___) =>
+                        const Icon(Icons.broken_image, size: 100),
                   ),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   book.title,
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Chip(label: Text(book.category)),
+                Chip(label: Text(book.categoryName)),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -48,7 +67,8 @@ class BookDetailPage extends ConsumerWidget {
                 const SizedBox(height: 16),
                 const Text(
                   'Sinopsis',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style:
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(book.description),
@@ -56,10 +76,20 @@ class BookDetailPage extends ConsumerWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Logika pinjam buku bisa dipasang di sini
+                    onPressed: () async {
+                      final borrowService = BorrowService();
+                      final result = await borrowService.borrowBook(
+                          bookId: bookId, token: token);
+                      final success = result['success'] == true;
+
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Fitur peminjaman belum diaktifkan')),
+                        SnackBar(
+                          content: Text(success
+                              ? 'Berhasil mengajukan peminjaman.'
+                              : 'Gagal mengajukan peminjaman.'),
+                          backgroundColor:
+                              success ? Colors.green : Colors.red,
+                        ),
                       );
                     },
                     child: const Text('Pinjam Buku'),
@@ -69,13 +99,11 @@ class BookDetailPage extends ConsumerWidget {
             ),
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text('Error: $error')),
-      ),
-    );
-  }
-  
-  ProviderListenable singleBookProvider(int bookId) {
-    throw UnimplementedError('singleBookProvider is not implemented.');
-  }
+      );
+    },
+    loading: () => const Center(child: CircularProgressIndicator()),
+    error: (error, _) => Center(child: Text('Error: $error')),
+  ),
+);
+}
 }
