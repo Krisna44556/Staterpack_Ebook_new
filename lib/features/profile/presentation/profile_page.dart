@@ -102,114 +102,145 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final profileAsync = ref.watch(profileProvider);
+Widget build(BuildContext context) {
+  final profileAsync = ref.watch(profileProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profil Saya'),
-        actions: [
-          profileAsync.when(
-            data: (user) {
-              final avatarUrl = user.avatar;
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: CircleAvatar(
-                  backgroundImage: avatarUrl != null && avatarUrl.isNotEmpty
-                      ? NetworkImage(avatarUrl)
-                      : null,
-                  child: avatarUrl == null || avatarUrl.isEmpty
-                      ? const Icon(Icons.person)
-                      : null,
-                ),
-              );
-            },
-            loading: () => const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-            ),
-            error: (_, __) => const Icon(Icons.error),
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
-            onPressed: () async {
-              final confirm = await showDialog<bool>(
-                context: context,
-                builder: (ctx) => AlertDialog(
-                  title: const Text('Logout'),
-                  content: const Text('Apakah Anda yakin ingin logout?'),
-                  actions: [
-                    TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Batal')),
-                    TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Logout')),
-                  ],
-                ),
-              );
-              if (confirm == true) {
-                await _logout();
-              }
-            },
-          ),
-        ],
-      ),
-      body: profileAsync.when(
-        data: (user) {
-          _fillForm(user);
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: ListView(
-                children: [
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(labelText: 'Nama'),
-                    validator: (val) => val == null || val.isEmpty ? 'Nama wajib diisi' : null,
-                  ),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Email'),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (val) {
-                      if (val == null || val.isEmpty) return 'Email wajib diisi';
-                      final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-                      if (!emailRegex.hasMatch(val)) return 'Email tidak valid';
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(labelText: 'Password Baru'),
-                    obscureText: true,
-                  ),
-                  TextFormField(
-                    controller: _passwordConfirmController,
-                    decoration: const InputDecoration(labelText: 'Konfirmasi Password'),
-                    obscureText: true,
-                    validator: (val) {
-                      if (_passwordController.text.isNotEmpty && val != _passwordController.text) {
-                        return 'Password tidak sama';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _avatarController,
-                    decoration: const InputDecoration(labelText: 'URL Avatar'),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _submit,
-                    child: const Text('Simpan Perubahan'),
-                  ),
+  return Scaffold(
+    backgroundColor: Colors.white,
+    appBar: AppBar(
+      backgroundColor: const Color(0xFF6D4C41), // warna coklat
+      title: const Text('Profil Saya', style: TextStyle(color: Colors.white)),
+      iconTheme: const IconThemeData(color: Colors.white),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.logout),
+          tooltip: 'Logout',
+          onPressed: () async {
+            final confirm = await showDialog<bool>(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                title: const Text('Logout'),
+                content: const Text('Apakah Anda yakin ingin logout?'),
+                actions: [
+                  TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Batal')),
+                  TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Logout')),
                 ],
               ),
-            ),
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Gagal memuat profil: $e')),
-      ),
-    );
-  }
+            );
+            if (confirm == true) {
+              await _logout();
+            }
+          },
+        ),
+      ],
+    ),
+    body: profileAsync.when(
+      data: (user) {
+        _fillForm(user);
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              Center(
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.brown[200],
+                  backgroundImage: (user.avatar != null && user.avatar!.isNotEmpty)
+                      ? NetworkImage(user.avatar!)
+                      : null,
+                  child: (user.avatar == null || user.avatar!.isEmpty)
+                      ? const Icon(Icons.person, size: 50, color: Colors.white)
+                      : null,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Nama',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (val) => val == null || val.isEmpty ? 'Nama wajib diisi' : null,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (val) {
+                        if (val == null || val.isEmpty) return 'Email wajib diisi';
+                        final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                        if (!emailRegex.hasMatch(val)) return 'Email tidak valid';
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        labelText: 'Password Baru',
+                        border: OutlineInputBorder(),
+                      ),
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordConfirmController,
+                      decoration: const InputDecoration(
+                        labelText: 'Konfirmasi Password',
+                        border: OutlineInputBorder(),
+                      ),
+                      obscureText: true,
+                      validator: (val) {
+                        if (_passwordController.text.isNotEmpty && val != _passwordController.text) {
+                          return 'Password tidak sama';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _avatarController,
+                      decoration: const InputDecoration(
+                        labelText: 'URL Avatar',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF6D4C41),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        onPressed: _submit,
+                        child: const Text(
+                          'Simpan Perubahan',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Center(child: Text('Gagal memuat profil: $e')),
+    ),
+  );
+}
 }
