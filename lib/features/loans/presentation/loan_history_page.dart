@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/loan_provider.dart';
-import '../../../models/loan_model.dart';
 
 class LoanHistoryPage extends ConsumerWidget {
   const LoanHistoryPage({super.key});
