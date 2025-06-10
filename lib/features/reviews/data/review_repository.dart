@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/service/dio_client.dart';
-import '../../../models/review_model.dart';
 
 class ReviewRepository {
   final Dio _dio = DioClient.dio;
