@@ -28,7 +28,7 @@ class _LoanFormPageState extends ConsumerState<LoanFormPage> {
       await repo.borrowBook(widget.book.id);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Book borrowed successfully')),
+          const SnackBar(content: Text('Book borrowed successfully')),
         );
         Navigator.pop(context, true);
       }
@@ -47,13 +47,13 @@ class _LoanFormPageState extends ConsumerState<LoanFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Borrow Book'),
+        title: const Text('Borrow Book'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Text('Do you want to borrow this book?'),
+            const Text('Do you want to borrow this book?'),
             const SizedBox(height: 16),
             Text(widget.book.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             const SizedBox(height: 16),
