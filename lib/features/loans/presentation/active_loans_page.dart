@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/loan_provider.dart';
-import '../../../models/loan_model.dart';
 
 class ActiveLoansPage extends ConsumerWidget {
   const ActiveLoansPage({super.key});
@@ -11,12 +10,15 @@ class ActiveLoansPage extends ConsumerWidget {
       // Panggil repository untuk return buku
       await ref.read(loanRepositoryProvider).returnBook(loanId);
       // Refresh daftar pinjaman aktif setelah pengembalian
+      // ignore: unused_result
       ref.refresh(activeLoansProvider);
 
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Book returned successfully')),
       );
     } catch (e) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to return book: $e')),
       );
