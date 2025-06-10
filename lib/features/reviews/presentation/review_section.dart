@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/review_provider.dart';
-import '../../../models/review_model.dart';
 
 class ReviewSection extends ConsumerWidget {
   final int bookId;
