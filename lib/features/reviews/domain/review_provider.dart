@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/review_repository.dart';
-import '../../../models/review_model.dart';
 
 class ReviewState {
   final List<Review> reviews;
