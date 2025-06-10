@@ -13,37 +13,29 @@ class BookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Card(
-        elevation: 3,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: book.coverUrl.isNotEmpty
-                  ? ClipRRect(
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.network(
-                        book.coverUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : const Icon(Icons.book, size: 80),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                book.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: ListTile(
+        leading: book.imageUrl.isNotEmpty
+            ? Image.network(
+                book.imageUrl,
+                width: 50,
+                height: 70,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.broken_image),
+              )
+            : const SizedBox(
+                width: 50,
+                height: 70,
+                child: Icon(Icons.book),
               ),
-            ),
-          ],
+        title: Text(book.title),
+        subtitle: Text(
+          'Penulis: ${book.author}\nKategori: ${book.category ?? 'Tidak ada kategori'}',
         ),
+        isThreeLine: true,
+        onTap: onTap,
       ),
     );
   }
