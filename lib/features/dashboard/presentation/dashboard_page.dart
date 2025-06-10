@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../books/presentation/book_list_page.dart';
 import '../../profile/presentation/profile_page.dart';
 import '../../loans/presentation/loan_history_page.dart';
 import '../../home/presentation/home_page.dart';
@@ -37,6 +36,23 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       bottomNavigationBar: BottomNavbar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class BookListPage extends StatelessWidget {
+  const BookListPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Replace with your actual UI for the book list page
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Book List'),
+      ),
+      body: const Center(
+        child: Text('Book List Page'),
       ),
     );
   }
