@@ -39,4 +39,4 @@ final bookDetailProvider = FutureProvider.family<BookModel, int>((ref, bookId) a
 final singleBookProvider = FutureProvider.family<BookModel, int>((ref, bookId) async {
   final repo = ref.watch(bookRepositoryProvider);
   return repo.fetchBookDetail(bookId);
-});
+
