@@ -5,12 +5,13 @@ class BookCard extends StatelessWidget {
   final BookModel book;
   final VoidCallback onTap;
 
+
   const BookCard({
     Key? key,
     required this.book,
     required this.onTap,
   }) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return Card(
